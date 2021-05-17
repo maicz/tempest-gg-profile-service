@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -12,8 +14,7 @@ import lombok.NoArgsConstructor;
 public class SummonerProfileDTO {
     private String id;
     private String name;
-    private String position;
-    private String rank;
-    private String division;
     private String profilePictureUrl;
+    private String position;
+    List<Ranking> rankings;
 }

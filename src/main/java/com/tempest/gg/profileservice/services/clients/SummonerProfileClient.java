@@ -1,4 +1,4 @@
-package com.tempest.gg.profileservice.services;
+package com.tempest.gg.profileservice.services.clients;
 
 import com.tempest.gg.profileservice.models.downstream.SummonerProfileRiot;
 import org.springframework.cloud.openfeign.FeignClient;

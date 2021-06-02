@@ -1,6 +1,6 @@
 package com.tempest.gg.profileservice.controllers;
 
-import com.tempest.gg.profileservice.models.SummonerProfileDTO;
+import com.tempest.gg.profileservice.models.SummonerProfile;
 import com.tempest.gg.profileservice.services.SummonerProfileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +21,7 @@ public class SummonerProfilesController {
     }
 
     @GetMapping("/{summonerName}")
-    public SummonerProfileDTO getSummonerProfileByName(@PathVariable(name = "summonerName") String summonerName) {
+    public SummonerProfile getSummonerProfileByName(@PathVariable(name = "summonerName") String summonerName) {
         LOGGER.info("Fetching summoner: {}", summonerName);
         return summonerProfileService.getSummonerProfile(summonerName);
     }

@@ -1,15 +1,16 @@
-package com.tempest.gg.profileservice.models.downstream;
+package com.tempest.gg.profileservice.models.riot;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SummonerProfileRiot {
+public class RiotSummonerProfile {
 
     private String id;
     private String accountId;
@@ -18,5 +19,7 @@ public class SummonerProfileRiot {
     private Integer profileIconId;
     private Date revisionDate;
     private Integer summonerLevel;
+
+    private List<RiotMatch> matchList;
 
 }

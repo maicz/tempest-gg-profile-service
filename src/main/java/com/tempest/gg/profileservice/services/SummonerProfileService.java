@@ -1,51 +1,49 @@
 package com.tempest.gg.profileservice.services;
 
+import com.tempest.gg.profileservice.clients.SummonerProfileClient;
 import com.tempest.gg.profileservice.models.Ranking;
-import com.tempest.gg.profileservice.models.SummonerProfileDTO;
-import com.tempest.gg.profileservice.models.downstream.RankingRiot;
-import com.tempest.gg.profileservice.models.downstream.SummonerProfileRiot;
-import com.tempest.gg.profileservice.services.clients.RankingClient;
-import com.tempest.gg.profileservice.services.clients.SummonerProfileClient;
+import com.tempest.gg.profileservice.models.SummonerProfile;
+import com.tempest.gg.profileservice.models.riot.RiotMatch;
+import com.tempest.gg.profileservice.models.riot.RiotSummonerProfile;
+import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Future;
 
 @Service
 public class SummonerProfileService {
 
     private final SummonerProfileClient summonerProfileClient;
-    private final RankingClient rankingClient;
+    private final RankingService rankingService;
+    private final MatchHistoryService matchHistoryService;
 
-    public SummonerProfileService(SummonerProfileClient summonerProfileClient, RankingClient rankingClient) {
+    @Value("${riot.api.datadragon}")
+    private String dataDragonUrl;
+
+    public SummonerProfileService(SummonerProfileClient summonerProfileClient, RankingService rankingService, MatchHistoryService matchHistoryService) {
         this.summonerProfileClient = summonerProfileClient;
-        this.rankingClient = rankingClient;
+        this.rankingService = rankingService;
+        this.matchHistoryService = matchHistoryService;
     }
 
-    public SummonerProfileDTO getSummonerProfile(String summonerName) {
-        SummonerProfileRiot summoner = summonerProfileClient.getSummonerByName(summonerName);
-        List<RankingRiot> riotRankings = rankingClient.getSummonerRankings(summoner.getId());
-        List<Ranking> rankings = new ArrayList<>();
-        riotRankings.forEach(riotRank -> rankings.add(Ranking.builder()
-                .rank(riotRank.getRank())
-                .queueType(riotRank.getQueueType())
-                .leaguePoints(riotRank.getLeaguePoints())
-                .losses(riotRank.getLosses())
-                .wins(riotRank.getWins())
-                .tier(riotRank.getTier())
-                .winRate(calculateWinRate(riotRank.getWins(), riotRank.getLosses()))
-                .build()));
+    @SneakyThrows
+    public SummonerProfile getSummonerProfile(String summonerName) {
 
-        return SummonerProfileDTO.builder()
+        RiotSummonerProfile summoner = summonerProfileClient.getSummonerByName(summonerName);
+
+        Future<List<Ranking>> rankings = rankingService.getRankings(summoner);
+        Future<List<RiotMatch>> matchHistory = matchHistoryService.getMatchHistory(summoner.getAccountId());
+
+
+        return SummonerProfile.builder()
                 .id(summoner.getId())
                 .name(summoner.getName())
                 .position("Support")
-                .rankings(rankings)
-                .profilePictureUrl("http://ddragon.leagueoflegends.com/cdn/11.7.1/img/profileicon/" + summoner.getProfileIconId() + ".png")
+                .rankings(rankings.get())
+                .matches(matchHistory.get())
+                .profilePictureUrl(dataDragonUrl + "/img/profileicon/" + summoner.getProfileIconId() + ".png")
                 .build();
-    }
-
-    private Integer calculateWinRate(Integer wins, Integer losses) {
-        return Float.valueOf(wins.floatValue() / (wins.floatValue() + losses.floatValue()) * 100).intValue();
     }
 }

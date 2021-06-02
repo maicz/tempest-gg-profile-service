@@ -1,4 +1,4 @@
-package com.tempest.gg.profileservice.models.downstream;
+package com.tempest.gg.profileservice.models.riot;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RankingRiot {
+public class RiotRanking {
 
     private String leagueId;
     private String queueType;

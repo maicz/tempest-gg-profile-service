@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
-@FeignClient(name = "summonerRankings", url = "${riot.api.url}")
+@FeignClient(name = "summonerRankings", url = "${riot.api.url.v4}")
 public interface RankingClient {
 
     @RequestMapping(method = RequestMethod.GET, value = "league/v4/entries/by-summoner/{summonerId}")

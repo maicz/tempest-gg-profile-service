@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@FeignClient(name = "summonerProfiles", url = "${riot.api.url}")
+@FeignClient(name = "summonerProfiles", url = "${riot.api.url.v4}")
 public interface SummonerProfileClient {
 
     @RequestMapping(method = RequestMethod.GET, value = "summoner/v4/summoners/by-name/{summonerName}")

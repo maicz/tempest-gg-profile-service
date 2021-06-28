@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RiotMatch {
-    private RiotMatchMetadata metadata;
-    private RiotMatchInfo info;
+public class Selection {
+    private Integer perk;
+    private Integer var1;
+    private Integer var2;
+    private Integer var3;
 }

@@ -18,5 +18,5 @@ public class SummonerProfile {
     private String profilePictureUrl;
     private String position;
     List<Ranking> rankings;
-    List<RiotMatch> matches;
+    List<String> matches;
 }

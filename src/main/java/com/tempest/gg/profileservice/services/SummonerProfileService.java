@@ -34,7 +34,7 @@ public class SummonerProfileService {
         RiotSummonerProfile summoner = summonerProfileClient.getSummonerByName(summonerName);
 
         Future<List<Ranking>> rankings = rankingService.getRankings(summoner);
-        Future<List<RiotMatch>> matchHistory = matchHistoryService.getMatchHistory(summoner.getPuuid());
+        Future<List<String>> matchHistory = matchHistoryService.getMatchHistory(summoner.getPuuid());
 
 
         return SummonerProfile.builder()

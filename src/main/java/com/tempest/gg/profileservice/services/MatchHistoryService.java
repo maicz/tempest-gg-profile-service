@@ -21,7 +21,17 @@ public class MatchHistoryService {
     }
 
     @Async
-    public Future<List<RiotMatch>> getMatchHistory(String playerUUID) {
-        return new AsyncResult<>(matchHistoryClient.getMatchHistory(playerUUID).getMatches());
+    public Future<List<String>> getMatchHistory(String playerUUID) {
+        return new AsyncResult<>(matchHistoryClient.getMatchHistory(playerUUID));
+    }
+
+    @Async
+    public Future<RiotMatch> getMatchById(String matchId) {
+        return new AsyncResult<>(matchHistoryClient.getMatchById(matchId));
+    }
+
+    @Async
+    public Future<String> getMatchHistoryByMatchId(String matchId) {
+        return new AsyncResult<>(matchHistoryClient.getMatchTimeLineByMatchId(matchId));
     }
 }

@@ -1,3 +1,4 @@
+/*
 package com.tempest.gg.profileservice.entities;
 
 import lombok.AllArgsConstructor;
@@ -17,3 +18,4 @@ public class MatchEntity {
     private Long id;
 
 }
+*/

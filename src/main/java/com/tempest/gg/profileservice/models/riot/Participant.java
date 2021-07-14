@@ -51,7 +51,7 @@ public class Participant {
     private Integer item6;
     private Integer itemsPurchased;
 
-    private Integer killingSrees;
+    private Integer killingSprees;
     private Integer kills;
 
     private String lane;

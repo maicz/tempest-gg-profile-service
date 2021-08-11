@@ -5,6 +5,7 @@ import com.tempest.gg.profileservice.models.Ranking;
 import com.tempest.gg.profileservice.models.SummonerProfile;
 import com.tempest.gg.profileservice.models.riot.RiotSummonerProfile;
 import com.tempest.gg.profileservice.repositories.PlayerRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +16,7 @@ import java.util.concurrent.Future;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class SummonerProfileService {
 
     private final SummonerProfileClient summonerProfileClient;
@@ -24,17 +26,6 @@ public class SummonerProfileService {
 
     @Value("${riot.api.datadragon}")
     private String dataDragonUrl;
-
-    public SummonerProfileService(
-            SummonerProfileClient summonerProfileClient,
-            RankingService rankingService,
-            MatchHistoryService matchHistoryService, PlayerRepository playerRepository) {
-
-        this.summonerProfileClient = summonerProfileClient;
-        this.rankingService = rankingService;
-        this.matchHistoryService = matchHistoryService;
-        this.playerRepository = playerRepository;
-    }
 
     @SneakyThrows
     public SummonerProfile getSummonerProfile(String summonerName) {
@@ -48,6 +39,7 @@ public class SummonerProfileService {
         RiotSummonerProfile summoner = summonerProfileClient.getSummonerByName(summonerName);
         Future<List<Ranking>> rankings = rankingService.getRankings(summoner);
         Future<List<String>> matchHistory = matchHistoryService.getMatchHistory(summoner.getPuuid());
+        matchHistoryService.loadMatches(matchHistory.get());
 
         SummonerProfile profile =
                 SummonerProfile.builder()
@@ -58,7 +50,6 @@ public class SummonerProfileService {
                         .matches(matchHistory.get())
                         .profilePictureUrl(dataDragonUrl + "/img/profileicon/" + summoner.getProfileIconId() + ".png")
                         .build();
-
         playerRepository.save(profile);
         return profile;
     }

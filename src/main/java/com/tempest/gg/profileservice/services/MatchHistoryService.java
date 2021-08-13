@@ -58,6 +58,13 @@ public class MatchHistoryService {
         }
     }
 
+
+    /**
+     * Method used to map a {@link RiotMatch} to a {@link Match}
+     *
+     * @param riotMatch the {@link RiotMatch} source object.
+     * @return {@link Match} return object.
+     */
     private Match mapRiotMatch(RiotMatch riotMatch) {
         return new Match(
                 riotMatch.getMetadata().getMatchId(),

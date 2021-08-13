@@ -4,9 +4,11 @@ import com.tempest.gg.profileservice.models.SummonerProfile;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface PlayerRepository extends MongoRepository<SummonerProfile, String> {
 
-    SummonerProfile findByNameIgnoreCase(String name);
+    Optional<SummonerProfile> findByNameIgnoreCase(String name);
 
 }

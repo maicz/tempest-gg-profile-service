@@ -18,6 +18,9 @@ public class SummonerProfile {
 
     @Id
     private String id;
+    private String accountId;
+    private String puuid;
+    private Integer summonerLevel;
     private String name;
     private String profilePictureUrl;
     private String position;

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Future;
 
 @Service
@@ -30,10 +31,10 @@ public class SummonerProfileService {
     @SneakyThrows
     public SummonerProfile getSummonerProfile(String summonerName) {
 
-        SummonerProfile cachedProfile = playerRepository.findByNameIgnoreCase(summonerName);
+        Optional<SummonerProfile> cachedProfile = playerRepository.findByNameIgnoreCase(summonerName);
 
-        if (cachedProfile != null) {
-            return cachedProfile;
+        if (cachedProfile.isPresent()) {
+            return cachedProfile.get();
         }
 
         RiotSummonerProfile summoner = summonerProfileClient.getSummonerByName(summonerName);
@@ -44,6 +45,9 @@ public class SummonerProfileService {
         SummonerProfile profile =
                 SummonerProfile.builder()
                         .id(summoner.getId())
+                        .accountId(summoner.getAccountId())
+                        .puuid(summoner.getPuuid())
+                        .summonerLevel(summoner.getSummonerLevel())
                         .name(summoner.getName())
                         .position("Support")
                         .rankings(rankings.get())
@@ -53,5 +57,4 @@ public class SummonerProfileService {
         playerRepository.save(profile);
         return profile;
     }
-
 }

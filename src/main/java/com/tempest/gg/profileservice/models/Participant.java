@@ -22,5 +22,8 @@ public class Participant {
     private Integer deaths;
     private Integer assists;
 
+    private Integer visionScore;
+    private Integer totalMinionsKilled;
+
     private Boolean win;
 }

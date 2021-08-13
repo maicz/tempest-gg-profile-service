@@ -10,8 +10,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.scheduling.annotation.Async;
 
-import java.util.Comparator;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -31,7 +30,7 @@ public class SummonerInfo {
     @JsonIgnore
     private CircularFifoQueue<ChampStatsEntry> statsEntries = new CircularFifoQueue<>(100);
 
-    private Map<String,SummonerChampInfo> champInfo;
+    private Map<String, SummonerChampInfo> champInfo = new HashMap<>();
 
     @Async
     public void updateSummonerInfo() {
@@ -50,13 +49,25 @@ public class SummonerInfo {
                 .getKey();
     }
 
-    private void updateChampInfo(){
+    private void updateChampInfo() {
         statsEntries.forEach(entry -> {
+            if(champInfo == null) {
+                return;
+            }
             SummonerChampInfo summonerChampInfo = champInfo.get(entry.getChampionName());
             if (summonerChampInfo != null) {
                 summonerChampInfo.updateStats(entry);
-            }else{
-
+            } else {
+                champInfo.put(entry.getChampionName(), new SummonerChampInfo(
+                        entry.getChampionName(),
+                        entry.getKDA(),
+                        entry.getKills().floatValue(),
+                        entry.getDeaths().floatValue(),
+                        entry.getAssists().floatValue(),
+                        entry.getWin() ? (float) 100 : (float) 0,
+                        entry.getCpm(),
+                        entry.getWin() ? (long) 1 : (long) 0
+                ));
             }
         });
     }

@@ -10,7 +10,7 @@ import java.util.List;
 @FeignClient(name = "matchHistory", url = "${riot.api.url.v5}")
 public interface MatchHistoryClient {
 
-    @GetMapping("match/v5/matches/by-puuid/{playerUUID}/ids")
+    @GetMapping("match/v5/matches/by-puuid/{playerUUID}/ids?queue=400")
     public List<String> getMatchHistory(@PathVariable("playerUUID") String playerUUID);
 
     @GetMapping("match/v5/matches/{matchId}")

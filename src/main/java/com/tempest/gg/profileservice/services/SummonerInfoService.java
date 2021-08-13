@@ -18,9 +18,10 @@ public class SummonerInfoService {
     private final MatchHistoryService matchHistoryService;
     private final SummonerProfileService summonerProfileService;
 
-    public String getSummonerInfo(String summonerName) {
+    public SummonerInfo getSummonerInfo(String summonerName) {
         SummonerProfile summonerProfile = summonerProfileService.getSummonerProfile(summonerName);
         List<Match> matches = matchHistoryService.getMatches(summonerProfile.getMatches());
+
         SummonerInfo summonerInfo = new SummonerInfo();
         summonerInfo.setSummonerName(summonerName);
 
@@ -38,9 +39,8 @@ public class SummonerInfoService {
                     participant.getVisionScore(),
                     (float) (participant.getTotalMinionsKilled().longValue() / (m.getGameDuration() / 60000))
             ));
-
         }
-
-        return null;
+        summonerInfo.updateSummonerInfo();
+        return summonerInfo;
     }
 }

@@ -15,7 +15,7 @@ public class ChampStatsEntry {
     private Integer deaths;
     private Integer assists;
 
-    private Float KDA;
+    private String KDA;
 
     private Boolean win;
 

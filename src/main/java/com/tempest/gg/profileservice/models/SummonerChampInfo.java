@@ -9,7 +9,7 @@ public class SummonerChampInfo {
     private String champion;
     private String championIconUrl;
 
-    private Float KDA;
+    private String KDA;
     private Float kills;
     private Float deaths;
     private Float assists;
@@ -23,7 +23,7 @@ public class SummonerChampInfo {
 
     public SummonerChampInfo(
             String champion,
-            Float KDA,
+            String KDA,
             Float kills,
             Float deaths,
             Float assists,
@@ -54,6 +54,6 @@ public class SummonerChampInfo {
         this.assists = (this.assists + entry.getAssists()) / this.games;
         this.cpm = (this.cpm + entry.getCpm()) / this.games;
 
-        this.KDA = (this.kills + this.assists) / this.deaths;
+        this.KDA = this.deaths == 0 ? "PERFECT" : String.valueOf((this.kills + this.assists) / this.deaths);
     }
 }

@@ -34,7 +34,7 @@ public class SummonerInfoService {
                     participant.getKills(),
                     participant.getDeaths(),
                     participant.getAssists(),
-                    (float) ((participant.getKills() + participant.getAssists()) / participant.getDeaths()),
+                    participant.getDeaths() == 0 ? "PERFECT":  String.valueOf((participant.getKills() + participant.getAssists()) / participant.getDeaths()),
                     participant.getWin(),
                     participant.getVisionScore(),
                     (float) (participant.getTotalMinionsKilled().longValue() / (m.getGameDuration() / 60000))
